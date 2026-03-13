@@ -35,8 +35,10 @@
             </div>
             <div class="space-y-4">
                 <input type="text" id="auth-identifier" class="w-full px-4 py-3 border rounded-xl focus:outline-blue-500" placeholder="User ID">
-                <div class="bg-red-100 p-3 rounded-lg border-2 border-red-500 text-[10px] text-red-800 leading-tight">
-                    <p id="msg-pwd-security" class="font-bold"></p>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-[10px] text-red-800 leading-snug">
+                    <p id="msg-pwd-security" class="font-medium italic text-center">
+                        🔒 <b>Security First:</b> Please use a unique password for this platform. Avoid reusing credentials from sensitive personal accounts.
+                    </p>
                 </div>
                 <div class="relative">
                     <input type="password" id="auth-password" class="w-full px-4 py-3 border rounded-xl focus:outline-blue-500" placeholder="Password">
@@ -78,7 +80,7 @@
 
     <div id="view-test-config" class="hidden flex flex-col items-center justify-center min-h-screen p-6 text-center">
         <h2 class="text-xl font-black text-blue-900 mb-6 uppercase">Seleziona Domande</h2>
-        <div class="grid gap-3 w-full max-w-sm">
+        <div class="grid gap-3 w-full max-sm">
             <button onclick="prepareQuiz('test', null, 10)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50">10 Domande</button>
             <button onclick="prepareQuiz('test', null, 20)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50">20 Domande</button>
             <button onclick="prepareQuiz('test', null, 40)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50">40 Domande</button>
@@ -88,7 +90,7 @@
 
     <div id="view-clusters" class="hidden flex flex-col items-center justify-center min-h-screen p-6 text-center">
         <h2 class="text-xl font-black text-blue-900 mb-6 uppercase">Select Cluster</h2>
-        <div id="cluster-buttons" class="grid gap-3 w-full max-w-sm"></div>
+        <div id="cluster-buttons" class="grid gap-3 w-full max-sm"></div>
         <button onclick="showView('view-menu')" class="mt-8 text-gray-400 text-xs underline uppercase">Back</button>
     </div>
 
@@ -139,20 +141,22 @@ let currentLang = 'it', currentUser = null, quizMode = null, questions = [], cur
 
 const i18n = {
     it: {
-        user: "Utente", pwdSec: "⚠️ <b>ASSOLUTAMENTE VIETATO</b> usare password usate su altri siti. Questo è un sito pubblico.",
+        user: "Utente", 
         test: "📝 MODALITÀ TEST", testSub: "10, 20 o 40 domande casuali + Timer", spot: "🎯 DOMANDE SPOT", spotSub: "Timer e suggerimenti immediati",
         cluster: "📂 DIGITAL SKILLS - CLUSTERS", clusterSub: "Seleziona una categoria specifica", recovery: "♻️ ERROR RECOVERY", recoverySub: "Ripassa solo gli errori passati",
         load: "Caricamento...", next: "AVANTI →", hint: "Suggerimento?", res: "RIEPILOGO SESSIONE", home: "MENU PRINCIPALE",
         paceOk: "⏱️ Ritmo perfetto per l'esame!", paceSlow: "⚠️ Ritmo troppo lento per l'esame.",
-        authErr: "Credenziali errate.", authOk: "Registrazione riuscita! Ora accedi.", noErrors: "Nessun errore trovato!", masteredConfirm: "Rimuovere dagli errori?", masteredOk: "Fatto!"
+        authErr: "Credenziali errate.", authOk: "Registrazione riuscita! Ora accedi.", noErrors: "Nessun errore trovato!",
+        forget: "Dimentica errore"
     },
     en: {
-        user: "User", pwdSec: "⚠️ <b>STRICTLY FORBIDDEN</b> to use passwords used on other sites. Public website.",
+        user: "User",
         test: "📝 TEST MODE", testSub: "10, 20 or 40 random questions + Timer", spot: "🎯 SPOT QUESTIONS", spotSub: "Timer and instant hints",
         cluster: "📂 DIGITAL SKILLS - CLUSTERS", clusterSub: "Select a specific category", recovery: "♻️ ERROR RECOVERY", recoverySub: "Review your past mistakes",
         load: "Loading...", next: "NEXT →", hint: "Hint?", res: "SESSION SUMMARY", home: "BACK TO MENU",
         paceOk: "⏱️ Great pace for the exam!", paceSlow: "⚠️ Too slow for the exam.",
-        authErr: "Wrong credentials.", authOk: "Signup successful! Login now.", noErrors: "No errors found!", masteredConfirm: "Remove from errors?", masteredOk: "Done!"
+        authErr: "Wrong credentials.", authOk: "Signup successful! Login now.", noErrors: "No errors found!",
+        forget: "Forget error"
     }
 };
 
@@ -160,7 +164,6 @@ function updateLanguage(l) {
     currentLang = l;
     document.getElementById('btn-it').className = l === 'it' ? "px-3 py-1 rounded bg-blue-600 text-white shadow font-bold border" : "px-3 py-1 rounded bg-white text-gray-700 shadow font-bold border";
     document.getElementById('btn-en').className = l === 'en' ? "px-3 py-1 rounded bg-blue-600 text-white shadow font-bold border" : "px-3 py-1 rounded bg-white text-gray-700 shadow font-bold border";
-    document.getElementById('msg-pwd-security').innerHTML = i18n[l].pwdSec;
     if (currentUser) document.getElementById('display-user').innerText = `${i18n[l].user}: ${currentUser}`;
     ['test','spot','cluster','recovery'].forEach(k => {
         const t = document.getElementById(`txt-menu-${k}`), s = document.getElementById(`txt-menu-${k}-sub`);
@@ -195,7 +198,6 @@ async function saveErrors(errorQIds) {
 }
 
 async function manualClear(qId, btnElement) {
-    if (!confirm(i18n[currentLang].masteredConfirm)) return;
     const { error } = await _supabase.from('user_errors').update({ mastered: true }).eq('user_id', currentUser).eq('q_id', qId);
     if (!error) btnElement.closest('.recap-card').style.opacity = "0.3";
 }
@@ -269,7 +271,7 @@ function renderRecap() {
     sessionLog.forEach((item, idx) => {
         const div = document.createElement('div');
         div.className = `recap-card p-3 rounded-lg border text-[10px] relative ${item.isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`;
-        const defBtn = (quizMode === 'recovery') ? `<button onclick="manualClear(${item.q_id}, this)" class="absolute top-2 right-2 text-gray-400 hover:text-orange-500"><i class="fas fa-check-circle"></i></button>` : '';
+        const defBtn = (quizMode === 'recovery') ? `<button onclick="manualClear(${item.q_id}, this)" class="absolute top-2 right-2 bg-orange-100 text-orange-700 px-2 py-1 rounded font-bold hover:bg-orange-200 transition text-[8px] uppercase">${i18n[currentLang].forget}</button>` : '';
         div.innerHTML = `${defBtn}<b>${idx + 1}. ${item.question}</b><br>User: ${item.userAns} | Correct: ${item.correctAns}`;
         container.appendChild(div);
     });
