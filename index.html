@@ -46,6 +46,9 @@
                 </div>
                 <button onclick="handleAuth()" class="w-full bg-blue-600 text-white font-black py-3 rounded-xl hover:bg-blue-700 transition uppercase tracking-widest">Entra</button>
                 <div id="auth-msg" class="hidden text-center text-xs font-bold p-3 rounded-xl border mt-2"></div>
+                <div class="mt-4 text-center">
+                    <a href="https://docs.google.com/document/d/1kPtHEbgfHXVHRIQ_r9VfD65YM5d7ZSOVjjOF3Tn0yk4/edit?tab=t.0" target="_blank" class="text-xs blink-link underline uppercase">👉 Leggi le istruzioni qui 👈</a>
+                </div>
             </div>
         </div>
     </div>
@@ -53,7 +56,7 @@
     <div id="view-menu" class="hidden flex flex-col items-center justify-center min-h-screen p-6">
         <div id="display-user" class="mb-6 text-blue-800 font-black tracking-widest uppercase text-sm"></div>
         <div class="grid gap-4 w-full max-w-md">
-            <button onclick="prepareQuiz('test')" class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-600 text-left hover:shadow-md transition">
+            <button onclick="showView('view-test-config')" class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-600 text-left hover:shadow-md transition">
                 <h3 class="font-black text-sm" id="txt-menu-test"></h3>
                 <p class="text-gray-400 text-[10px]" id="txt-menu-test-sub"></p>
             </button>
@@ -71,6 +74,16 @@
             </button>
             <button onclick="location.reload()" class="mt-4 text-gray-300 text-[10px] underline uppercase text-center">Logout</button>
         </div>
+    </div>
+
+    <div id="view-test-config" class="hidden flex flex-col items-center justify-center min-h-screen p-6 text-center">
+        <h2 class="text-xl font-black text-blue-900 mb-6 uppercase">Seleziona Domande</h2>
+        <div class="grid gap-3 w-full max-w-sm">
+            <button onclick="prepareQuiz('test', null, 10)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50">10 Domande</button>
+            <button onclick="prepareQuiz('test', null, 20)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50">20 Domande</button>
+            <button onclick="prepareQuiz('test', null, 40)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50">40 Domande</button>
+        </div>
+        <button onclick="showView('view-menu')" class="mt-8 text-gray-400 text-xs underline uppercase">Back</button>
     </div>
 
     <div id="view-clusters" class="hidden flex flex-col items-center justify-center min-h-screen p-6 text-center">
@@ -127,7 +140,7 @@ let currentLang = 'it', currentUser = null, quizMode = null, questions = [], cur
 const i18n = {
     it: {
         user: "Utente", pwdSec: "⚠️ <b>ASSOLUTAMENTE VIETATO</b> usare password usate su altri siti. Questo è un sito pubblico.",
-        test: "📝 MODALITÀ TEST", testSub: "10 domande casuali + Timer", spot: "🎯 DOMANDE SPOT", spotSub: "Timer e suggerimenti immediati",
+        test: "📝 MODALITÀ TEST", testSub: "10, 20 o 40 domande casuali + Timer", spot: "🎯 DOMANDE SPOT", spotSub: "Timer e suggerimenti immediati",
         cluster: "📂 DIGITAL SKILLS - CLUSTERS", clusterSub: "Seleziona una categoria specifica", recovery: "♻️ ERROR RECOVERY", recoverySub: "Ripassa solo gli errori passati",
         load: "Caricamento...", next: "AVANTI →", hint: "Suggerimento?", res: "RIEPILOGO SESSIONE", home: "MENU PRINCIPALE",
         paceOk: "⏱️ Ritmo perfetto per l'esame!", paceSlow: "⚠️ Ritmo troppo lento per l'esame.",
@@ -135,7 +148,7 @@ const i18n = {
     },
     en: {
         user: "User", pwdSec: "⚠️ <b>STRICTLY FORBIDDEN</b> to use passwords used on other sites. Public website.",
-        test: "📝 TEST MODE", testSub: "10 random questions + Timer", spot: "🎯 SPOT QUESTIONS", spotSub: "Timer and instant hints",
+        test: "📝 TEST MODE", testSub: "10, 20 or 40 random questions + Timer", spot: "🎯 SPOT QUESTIONS", spotSub: "Timer and instant hints",
         cluster: "📂 DIGITAL SKILLS - CLUSTERS", clusterSub: "Select a specific category", recovery: "♻️ ERROR RECOVERY", recoverySub: "Review your past mistakes",
         load: "Loading...", next: "NEXT →", hint: "Hint?", res: "SESSION SUMMARY", home: "BACK TO MENU",
         paceOk: "⏱️ Great pace for the exam!", paceSlow: "⚠️ Too slow for the exam.",
@@ -187,7 +200,7 @@ async function manualClear(qId, btnElement) {
     if (!error) btnElement.closest('.recap-card').style.opacity = "0.3";
 }
 
-async function prepareQuiz(mode, filterVal = null) {
+async function prepareQuiz(mode, filterVal = null, testCount = 10) {
     quizMode = mode; showView('view-loading');
     let qSet = [];
     if (mode === 'recovery') {
@@ -202,7 +215,7 @@ async function prepareQuiz(mode, filterVal = null) {
         const { data } = await q; qSet = data || [];
     }
     questions = qSet.sort(() => Math.random() - 0.5);
-    if (mode === 'test') questions = questions.slice(0, 10);
+    if (mode === 'test') questions = questions.slice(0, testCount);
     currentIndex = 0; score = 0; sessionLog = [];
     showView('view-quiz'); startTimer(); renderQuestion();
 }
@@ -265,7 +278,7 @@ function renderRecap() {
 function nextQuestion() { currentIndex++; if (currentIndex < questions.length) renderQuestion(); else finishQuiz(); }
 function startTimer() { seconds = 0; clearInterval(timerInterval); timerInterval = setInterval(() => { seconds++; const m = Math.floor(seconds/60).toString().padStart(2,'0'), s = (seconds%60).toString().padStart(2,'0'); document.getElementById('timer').innerText = `${m}:${s}`; }, 1000); }
 function toggleHint() { const t = document.getElementById('hint-text'); t.innerText = questions[currentIndex][`hint_${currentLang}`] || "..."; t.classList.toggle('hidden'); }
-function showView(id) { ['view-auth','view-menu','view-clusters','view-loading','view-quiz','view-results'].forEach(v => document.getElementById(v).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
+function showView(id) { ['view-auth','view-menu','view-clusters','view-test-config','view-loading','view-quiz','view-results'].forEach(v => document.getElementById(v).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
 function toggleAuthMode(m) { authMode = m; document.getElementById('tab-login').className = m === 'login' ? "flex-1 py-2 rounded-md font-bold bg-white shadow" : "flex-1 py-2 rounded-md font-bold text-gray-500"; document.getElementById('tab-signup').className = m === 'signup' ? "flex-1 py-2 rounded-md font-bold bg-white shadow" : "flex-1 py-2 rounded-md font-bold text-gray-500"; }
 function togglePasswordVisibility() { const pwd = document.getElementById('auth-password'), icon = document.getElementById('eye-icon'); pwd.type = pwd.type === 'password' ? 'text' : 'password'; icon.className = icon.className.includes('eye-slash') ? 'fas fa-eye' : 'fas fa-eye-slash'; }
 async function showClusters() { showView('view-loading'); const { data } = await _supabase.from('questions').select('category'); const cats = [...new Set(data?.map(q => q.category))].filter(Boolean), container = document.getElementById('cluster-buttons'); container.innerHTML = ''; cats.forEach(c => { const b = document.createElement('button'); b.className = "bg-white p-4 rounded-xl shadow-sm border border-purple-100 font-bold text-purple-700 hover:bg-purple-50"; b.innerText = c; b.onclick = () => prepareQuiz('cluster', c); container.appendChild(b); }); showView('view-clusters'); }
