@@ -36,8 +36,8 @@
             <div class="space-y-4">
                 <input type="text" id="auth-identifier" class="w-full px-4 py-3 border rounded-xl focus:outline-blue-500" placeholder="User ID">
                 <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-[10px] text-red-800 leading-snug">
-                    <p id="msg-pwd-security" class="font-medium italic text-center">
-                        🔒 <b>Security First:</b> Please use a unique password for this platform. Avoid reusing credentials from sensitive personal accounts.
+                    <p class="font-medium italic text-center">
+                        🔒 <b>Security Notice:</b> This is a public website. You <b>MUST NOT</b> use passwords associated with sensitive personal accounts (e.g., your banking app or primary email). Please create a unique password specifically for this platform.
                     </p>
                 </div>
                 <div class="relative">
@@ -46,7 +46,7 @@
                         <i id="eye-icon" class="fas fa-eye"></i>
                     </button>
                 </div>
-                <button onclick="handleAuth()" class="w-full bg-blue-600 text-white font-black py-3 rounded-xl hover:bg-blue-700 transition uppercase tracking-widest">Entra</button>
+                <button onclick="handleAuth()" id="btn-auth-submit" class="w-full bg-blue-600 text-white font-black py-3 rounded-xl hover:bg-blue-700 transition uppercase tracking-widest">Entra</button>
                 <div id="auth-msg" class="hidden text-center text-xs font-bold p-3 rounded-xl border mt-2"></div>
                 <div class="mt-4 text-center">
                     <a href="https://docs.google.com/document/d/1kPtHEbgfHXVHRIQ_r9VfD65YM5d7ZSOVjjOF3Tn0yk4/edit?tab=t.0" target="_blank" class="text-xs blink-link underline uppercase">👉 Read instructions here 👈</a>
@@ -79,19 +79,19 @@
     </div>
 
     <div id="view-test-config" class="hidden flex flex-col items-center justify-center min-h-screen p-6 text-center">
-        <h2 class="text-xl font-black text-blue-900 mb-6 uppercase">Seleziona Domande</h2>
-        <div class="grid gap-3 w-full max-sm">
-            <button onclick="prepareQuiz('test', null, 10)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50">10 Domande</button>
-            <button onclick="prepareQuiz('test', null, 20)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50">20 Domande</button>
-            <button onclick="prepareQuiz('test', null, 40)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50">40 Domande</button>
+        <h2 class="text-xl font-black text-blue-900 mb-6 uppercase" id="txt-title-test">Seleziona Domande</h2>
+        <div class="grid gap-3 w-full max-w-xs mx-auto">
+            <button onclick="prepareQuiz('test', null, 10)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50" id="txt-btn-10">10 Domande</button>
+            <button onclick="prepareQuiz('test', null, 20)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50" id="txt-btn-20">20 Domande</button>
+            <button onclick="prepareQuiz('test', null, 40)" class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 font-bold text-blue-700 hover:bg-blue-50" id="txt-btn-40">40 Domande</button>
         </div>
-        <button onclick="showView('view-menu')" class="mt-8 text-gray-400 text-xs underline uppercase">Back</button>
+        <button onclick="showView('view-menu')" class="mt-8 text-gray-400 text-xs underline uppercase" id="txt-btn-back1">Indietro</button>
     </div>
 
     <div id="view-clusters" class="hidden flex flex-col items-center justify-center min-h-screen p-6 text-center">
-        <h2 class="text-xl font-black text-blue-900 mb-6 uppercase">Select Cluster</h2>
-        <div id="cluster-buttons" class="grid gap-3 w-full max-sm"></div>
-        <button onclick="showView('view-menu')" class="mt-8 text-gray-400 text-xs underline uppercase">Back</button>
+        <h2 class="text-xl font-black text-blue-900 mb-6 uppercase" id="txt-title-cluster">Seleziona Cluster</h2>
+        <div id="cluster-buttons" class="grid gap-3 w-full max-w-xs mx-auto"></div>
+        <button onclick="showView('view-menu')" class="mt-8 text-gray-400 text-xs underline uppercase" id="txt-btn-back2">Indietro</button>
     </div>
 
     <div id="view-loading" class="hidden fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center p-10 text-center">
@@ -147,7 +147,8 @@ const i18n = {
         load: "Caricamento...", next: "AVANTI →", hint: "Suggerimento?", res: "RIEPILOGO SESSIONE", home: "MENU PRINCIPALE",
         paceOk: "⏱️ Ritmo perfetto per l'esame!", paceSlow: "⚠️ Ritmo troppo lento per l'esame.",
         authErr: "Credenziali errate.", authOk: "Registrazione riuscita! Ora accedi.", noErrors: "Nessun errore trovato!",
-        forget: "Dimentica errore"
+        forget: "Dimentica errore", titleTest: "Seleziona Domande", titleCluster: "Seleziona Cluster",
+        q10: "10 Domande", q20: "20 Domande", q40: "40 Domande", back: "Indietro", authLog: "Entra", authReg: "Registrati"
     },
     en: {
         user: "User",
@@ -156,7 +157,8 @@ const i18n = {
         load: "Loading...", next: "NEXT →", hint: "Hint?", res: "SESSION SUMMARY", home: "BACK TO MENU",
         paceOk: "⏱️ Great pace for the exam!", paceSlow: "⚠️ Too slow for the exam.",
         authErr: "Wrong credentials.", authOk: "Signup successful! Login now.", noErrors: "No errors found!",
-        forget: "Forget error"
+        forget: "Forget error", titleTest: "Select Questions", titleCluster: "Select Cluster",
+        q10: "10 Questions", q20: "20 Questions", q40: "40 Questions", back: "Back", authLog: "Login", authReg: "Sign Up"
     }
 };
 
@@ -169,11 +171,22 @@ function updateLanguage(l) {
         const t = document.getElementById(`txt-menu-${k}`), s = document.getElementById(`txt-menu-${k}-sub`);
         if(t) t.innerText = i18n[l][k]; if(s) s.innerText = i18n[l][k+'Sub'];
     });
+    
+    // UI static translations
     document.getElementById('txt-loading').innerText = i18n[l].load;
     document.getElementById('btn-next').innerText = i18n[l].next;
     document.getElementById('txt-res-title').innerText = i18n[l].res;
     document.getElementById('btn-res-home').innerText = i18n[l].home;
     document.getElementById('btn-hint').innerText = i18n[l].hint;
+    document.getElementById('txt-title-test').innerText = i18n[l].titleTest;
+    document.getElementById('txt-title-cluster').innerText = i18n[l].titleCluster;
+    document.getElementById('txt-btn-10').innerText = i18n[l].q10;
+    document.getElementById('txt-btn-20').innerText = i18n[l].q20;
+    document.getElementById('txt-btn-40').innerText = i18n[l].q40;
+    document.getElementById('txt-btn-back1').innerText = i18n[l].back;
+    document.getElementById('txt-btn-back2').innerText = i18n[l].back;
+    document.getElementById('tab-signup').innerText = i18n[l].authReg;
+    document.getElementById('btn-auth-submit').innerText = authMode === 'login' ? i18n[l].authLog : i18n[l].authReg;
 }
 
 async function handleAuth() {
@@ -281,7 +294,12 @@ function nextQuestion() { currentIndex++; if (currentIndex < questions.length) r
 function startTimer() { seconds = 0; clearInterval(timerInterval); timerInterval = setInterval(() => { seconds++; const m = Math.floor(seconds/60).toString().padStart(2,'0'), s = (seconds%60).toString().padStart(2,'0'); document.getElementById('timer').innerText = `${m}:${s}`; }, 1000); }
 function toggleHint() { const t = document.getElementById('hint-text'); t.innerText = questions[currentIndex][`hint_${currentLang}`] || "..."; t.classList.toggle('hidden'); }
 function showView(id) { ['view-auth','view-menu','view-clusters','view-test-config','view-loading','view-quiz','view-results'].forEach(v => document.getElementById(v).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
-function toggleAuthMode(m) { authMode = m; document.getElementById('tab-login').className = m === 'login' ? "flex-1 py-2 rounded-md font-bold bg-white shadow" : "flex-1 py-2 rounded-md font-bold text-gray-500"; document.getElementById('tab-signup').className = m === 'signup' ? "flex-1 py-2 rounded-md font-bold bg-white shadow" : "flex-1 py-2 rounded-md font-bold text-gray-500"; }
+function toggleAuthMode(m) { 
+    authMode = m; 
+    document.getElementById('tab-login').className = m === 'login' ? "flex-1 py-2 rounded-md font-bold bg-white shadow" : "flex-1 py-2 rounded-md font-bold text-gray-500"; 
+    document.getElementById('tab-signup').className = m === 'signup' ? "flex-1 py-2 rounded-md font-bold bg-white shadow" : "flex-1 py-2 rounded-md font-bold text-gray-500"; 
+    document.getElementById('btn-auth-submit').innerText = m === 'login' ? i18n[currentLang].authLog : i18n[currentLang].authReg;
+}
 function togglePasswordVisibility() { const pwd = document.getElementById('auth-password'), icon = document.getElementById('eye-icon'); pwd.type = pwd.type === 'password' ? 'text' : 'password'; icon.className = icon.className.includes('eye-slash') ? 'fas fa-eye' : 'fas fa-eye-slash'; }
 async function showClusters() { showView('view-loading'); const { data } = await _supabase.from('questions').select('category'); const cats = [...new Set(data?.map(q => q.category))].filter(Boolean), container = document.getElementById('cluster-buttons'); container.innerHTML = ''; cats.forEach(c => { const b = document.createElement('button'); b.className = "bg-white p-4 rounded-xl shadow-sm border border-purple-100 font-bold text-purple-700 hover:bg-purple-50"; b.innerText = c; b.onclick = () => prepareQuiz('cluster', c); container.appendChild(b); }); showView('view-clusters'); }
 
