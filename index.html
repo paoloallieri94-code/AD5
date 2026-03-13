@@ -26,7 +26,6 @@
         <button onclick="updateLanguage('it')" id="btn-it" class="px-3 py-1 rounded bg-blue-600 text-white shadow font-bold border">IT</button>
     </div>
 
-    <!-- ===== AUTH ===== -->
     <div id="view-auth" class="flex items-center justify-center min-h-screen p-4 flex-col">
         <div class="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full border-t-4 border-blue-600">
             <h1 class="text-2xl font-black text-blue-900 mb-6 text-center tracking-tight uppercase">AD5 - Digital Skills</h1>
@@ -37,7 +36,7 @@
             <div class="space-y-4">
                 <input type="text" id="auth-identifier" class="w-full px-4 py-3 border rounded-xl focus:outline-blue-500" placeholder="User ID">
                 <div class="bg-red-100 p-3 rounded-lg border-2 border-red-500 text-[10px] text-red-800 leading-tight">
-                    <p id="msg-pwd-security" class="font-bold">⚠️ ASSOLUTAMENTE VIETATO usare password usate su altri siti. Questo è un sito pubblico.</p>
+                    <p id="msg-pwd-security" class="font-bold"></p>
                 </div>
                 <div class="relative">
                     <input type="password" id="auth-password" class="w-full px-4 py-3 border rounded-xl focus:outline-blue-500" placeholder="Password">
@@ -49,499 +48,229 @@
                 <div id="auth-msg" class="hidden text-center text-xs font-bold p-3 rounded-xl border mt-2"></div>
             </div>
         </div>
-        <a href="https://docs.google.com/document/d/1kPtHEbgfHXVHRIQ_r9VfD65YM5d7ZSOVjjOF3Tn0yk4/edit?usp=sharing" target="_blank" class="mt-8 blink-link text-xs underline uppercase tracking-widest text-center px-4">Technical & Functional Specifications Document</a>
     </div>
 
-    <!-- ===== MENU ===== -->
     <div id="view-menu" class="hidden flex flex-col items-center justify-center min-h-screen p-6">
         <div id="display-user" class="mb-6 text-blue-800 font-black tracking-widest uppercase text-sm"></div>
         <div class="grid gap-4 w-full max-w-md">
             <button onclick="prepareQuiz('test')" class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-600 text-left hover:shadow-md transition">
-                <h3 class="font-black text-sm" id="txt-menu-test">📝 MODALITÀ TEST</h3>
-                <p class="text-gray-400 text-[10px]" id="txt-menu-test-sub">10 domande casuali + Timer</p>
+                <h3 class="font-black text-sm" id="txt-menu-test"></h3>
+                <p class="text-gray-400 text-[10px]" id="txt-menu-test-sub"></p>
             </button>
             <button onclick="prepareQuiz('spot')" class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-emerald-500 text-left hover:shadow-md transition">
-                <h3 class="font-black text-sm" id="txt-menu-spot">🎯 DOMANDE SPOT</h3>
-                <p class="text-gray-400 text-[10px]" id="txt-menu-spot-sub">Timer e suggerimenti immediati</p>
+                <h3 class="font-black text-sm" id="txt-menu-spot"></h3>
+                <p class="text-gray-400 text-[10px]" id="txt-menu-spot-sub"></p>
             </button>
             <button onclick="showClusters()" class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-purple-500 text-left hover:shadow-md transition">
-                <h3 class="font-black text-sm" id="txt-menu-cluster">📂 DIGITAL SKILLS - CLUSTERS</h3>
-                <p class="text-gray-400 text-[10px]" id="txt-menu-cluster-sub">Seleziona una categoria specifica</p>
+                <h3 class="font-black text-sm" id="txt-menu-cluster"></h3>
+                <p class="text-gray-400 text-[10px]" id="txt-menu-cluster-sub"></p>
             </button>
             <button onclick="prepareQuiz('recovery')" class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-orange-500 text-left hover:shadow-md transition">
-                <h3 class="font-black text-sm" id="txt-menu-recovery">♻️ ERROR RECOVERY</h3>
-                <p class="text-gray-400 text-[10px]" id="txt-menu-recovery-sub">Ripassa solo gli errori passati</p>
+                <h3 class="font-black text-sm" id="txt-menu-recovery"></h3>
+                <p class="text-gray-400 text-[10px]" id="txt-menu-recovery-sub"></p>
             </button>
             <button onclick="location.reload()" class="mt-4 text-gray-300 text-[10px] underline uppercase text-center">Logout</button>
         </div>
     </div>
 
-    <!-- ===== CLUSTERS ===== -->
     <div id="view-clusters" class="hidden flex flex-col items-center justify-center min-h-screen p-6 text-center">
         <h2 class="text-xl font-black text-blue-900 mb-6 uppercase">Select Cluster</h2>
         <div id="cluster-buttons" class="grid gap-3 w-full max-w-sm"></div>
         <button onclick="showView('view-menu')" class="mt-8 text-gray-400 text-xs underline uppercase">Back</button>
     </div>
 
-    <!-- ===== LOADING ===== -->
     <div id="view-loading" class="hidden fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center p-10 text-center">
         <h2 class="text-xl font-bold text-blue-900 mb-4 animate-pulse" id="txt-loading">Caricamento...</h2>
         <div class="w-64 bg-gray-100 rounded-full overflow-hidden"><div class="loader-bar"></div></div>
     </div>
 
-    <!-- ===== QUIZ ===== -->
     <div id="view-quiz" class="hidden max-w-2xl mx-auto pt-20 p-4 pb-24">
         <div class="bg-white p-8 rounded-3xl shadow-2xl relative border border-gray-100">
             <div id="timer" class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full font-mono font-bold shadow-lg">00:00</div>
             <div class="flex justify-between items-center mb-4">
-                <div id="progress" class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">Domanda 1/10</div>
+                <div id="progress" class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]"></div>
                 <button onclick="finishQuiz()" class="text-[10px] font-black text-red-500 uppercase border border-red-200 px-2 py-1 rounded">Stop</button>
             </div>
             <h2 id="q-text" class="text-lg font-bold text-gray-800 mb-8 leading-tight">...</h2>
             <div id="opts-container" class="space-y-3"></div>
             <div id="feedback-area" class="mt-8 pt-6 border-t hidden">
                 <div id="expl-text" class="text-sm text-blue-800 bg-blue-50 p-4 rounded-2xl mb-4"></div>
-                <button onclick="nextQuestion()" class="w-full bg-gray-900 text-white font-bold py-4 rounded-xl shadow-lg" id="btn-next">AVANTI →</button>
+                <button onclick="nextQuestion()" class="w-full bg-gray-900 text-white font-bold py-4 rounded-xl shadow-lg" id="btn-next"></button>
             </div>
             <div id="hint-area" class="mt-6 text-center">
-                <button onclick="toggleHint()" class="text-orange-500 text-xs font-bold uppercase" id="btn-hint">Suggerimento?</button>
+                <button onclick="toggleHint()" class="text-orange-500 text-xs font-bold uppercase" id="btn-hint"></button>
                 <p id="hint-text" class="hidden mt-4 text-sm italic text-orange-700 bg-orange-50 p-4 rounded-xl"></p>
             </div>
         </div>
     </div>
 
-    <!-- ===== RESULTS ===== -->
     <div id="view-results" class="hidden max-w-2xl mx-auto pt-10 p-4 text-center">
         <div class="bg-white p-8 rounded-3xl shadow-2xl">
-            <h2 class="text-2xl font-black text-gray-900 mb-2 uppercase" id="txt-res-title">Riepilogo</h2>
+            <h2 class="text-2xl font-black text-gray-900 mb-2 uppercase" id="txt-res-title"></h2>
             <div id="final-score" class="text-6xl font-black text-blue-600 my-4">0/10</div>
             <div id="time-analysis" class="mb-6 p-4 rounded-2xl bg-gray-50 border text-xs">
                 <div id="res-time-spent" class="font-bold">00:00</div>
                 <div id="res-time-pace" class="mt-1">...</div>
             </div>
             <div id="recap-list" class="text-left space-y-4 max-h-[300px] overflow-y-auto mb-8"></div>
-            <button onclick="showView('view-menu')" class="w-full bg-gray-900 text-white py-4 rounded-xl font-black uppercase tracking-widest" id="btn-res-home">Menu</button>
+            <button onclick="showView('view-menu')" class="w-full bg-gray-900 text-white py-4 rounded-xl font-black uppercase tracking-widest" id="btn-res-home"></button>
         </div>
     </div>
 
 <script>
-/* =====================================================================
-   CONFIGURATION
-   ===================================================================== */
 const SUPABASE_URL = "https://tkiojsgejjifuvpsqbiv.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRraW9qc2dlamppZnV2cHNxYml2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMDAyMjIsImV4cCI6MjA4ODg3NjIyMn0.is7tqXILmnTY2juID1Nam5SjVkdolyHJI17u5861FdM";
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* =====================================================================
-   STATE
-   ===================================================================== */
-let currentLang = 'it';
-let currentUser = null;
-let quizMode = null;
-let questions = [];
-let currentIndex = 0;
-let score = 0;
-let timerInterval;
-let seconds = 0;
-let authMode = 'login';
-let sessionLog = [];
+let currentLang = 'it', currentUser = null, quizMode = null, questions = [], currentIndex = 0, score = 0, timerInterval, seconds = 0, authMode = 'login', sessionLog = [];
 
-/* =====================================================================
-   i18n
-   ===================================================================== */
 const i18n = {
     it: {
-        user: "Utente",
-        pwdSec: "⚠️ <b>ASSOLUTAMENTE VIETATO</b> usare password usate su altri siti. Questo è un sito pubblico.",
-        test: "📝 MODALITÀ TEST",      testSub: "10 domande casuali + Timer",
-        spot: "🎯 DOMANDE SPOT",       spotSub: "Timer e suggerimenti immediati",
-        cluster: "📂 DIGITAL SKILLS - CLUSTERS", clusterSub: "Seleziona una categoria specifica",
-        recovery: "♻️ ERROR RECOVERY", recoverySub: "Ripassa solo gli errori passati",
-        load: "Caricamento...", next: "AVANTI →", hint: "Suggerimento?",
-        res: "RIEPILOGO SESSIONE", home: "MENU PRINCIPALE",
+        user: "Utente", pwdSec: "⚠️ <b>ASSOLUTAMENTE VIETATO</b> usare password usate su altri siti. Questo è un sito pubblico.",
+        test: "📝 MODALITÀ TEST", testSub: "10 domande casuali + Timer", spot: "🎯 DOMANDE SPOT", spotSub: "Timer e suggerimenti immediati",
+        cluster: "📂 DIGITAL SKILLS - CLUSTERS", clusterSub: "Seleziona una categoria specifica", recovery: "♻️ ERROR RECOVERY", recoverySub: "Ripassa solo gli errori passati",
+        load: "Caricamento...", next: "AVANTI →", hint: "Suggerimento?", res: "RIEPILOGO SESSIONE", home: "MENU PRINCIPALE",
         paceOk: "⏱️ Ritmo perfetto per l'esame!", paceSlow: "⚠️ Ritmo troppo lento per l'esame.",
-        authErr: "Credenziali errate.", authOk: "Registrazione riuscita! Ora accedi.",
-        noErrors: "Nessun errore trovato. Ottimo lavoro!",
-        masteredConfirm: "Segnare come acquisita e rimuovere dagli errori?",
-        masteredOk: "Domanda rimossa dagli errori."
+        authErr: "Credenziali errate.", authOk: "Registrazione riuscita! Ora accedi.", noErrors: "Nessun errore trovato!", masteredConfirm: "Rimuovere dagli errori?", masteredOk: "Fatto!"
     },
     en: {
-        user: "User",
-        pwdSec: "⚠️ <b>STRICTLY FORBIDDEN</b> to use passwords used on other sites. Public website.",
-        test: "📝 TEST MODE",          testSub: "10 random questions + Timer",
-        spot: "🎯 SPOT QUESTIONS",     spotSub: "Timer and instant hints",
-        cluster: "📂 DIGITAL SKILLS - CLUSTERS", clusterSub: "Select a specific category",
-        recovery: "♻️ ERROR RECOVERY", recoverySub: "Review your past mistakes",
-        load: "Loading...", next: "NEXT →", hint: "Hint?",
-        res: "SESSION SUMMARY", home: "BACK TO MENU",
+        user: "User", pwdSec: "⚠️ <b>STRICTLY FORBIDDEN</b> to use passwords used on other sites. Public website.",
+        test: "📝 TEST MODE", testSub: "10 random questions + Timer", spot: "🎯 SPOT QUESTIONS", spotSub: "Timer and instant hints",
+        cluster: "📂 DIGITAL SKILLS - CLUSTERS", clusterSub: "Select a specific category", recovery: "♻️ ERROR RECOVERY", recoverySub: "Review your past mistakes",
+        load: "Loading...", next: "NEXT →", hint: "Hint?", res: "SESSION SUMMARY", home: "BACK TO MENU",
         paceOk: "⏱️ Great pace for the exam!", paceSlow: "⚠️ Too slow for the exam.",
-        authErr: "Wrong credentials.", authOk: "Signup successful! Please login.",
-        noErrors: "No errors found. Great job!",
-        masteredConfirm: "Mark as mastered and remove from errors?",
-        masteredOk: "Question removed from errors."
+        authErr: "Wrong credentials.", authOk: "Signup successful! Login now.", noErrors: "No errors found!", masteredConfirm: "Remove from errors?", masteredOk: "Done!"
     }
 };
 
-/* =====================================================================
-   LANGUAGE
-   ===================================================================== */
 function updateLanguage(l) {
     currentLang = l;
-    document.getElementById('btn-it').className = l === 'it'
-        ? "px-3 py-1 rounded bg-blue-600 text-white shadow font-bold border"
-        : "px-3 py-1 rounded bg-white text-gray-700 shadow font-bold border";
-    document.getElementById('btn-en').className = l === 'en'
-        ? "px-3 py-1 rounded bg-blue-600 text-white shadow font-bold border"
-        : "px-3 py-1 rounded bg-white text-gray-700 shadow font-bold border";
-
+    document.getElementById('btn-it').className = l === 'it' ? "px-3 py-1 rounded bg-blue-600 text-white shadow font-bold border" : "px-3 py-1 rounded bg-white text-gray-700 shadow font-bold border";
+    document.getElementById('btn-en').className = l === 'en' ? "px-3 py-1 rounded bg-blue-600 text-white shadow font-bold border" : "px-3 py-1 rounded bg-white text-gray-700 shadow font-bold border";
     document.getElementById('msg-pwd-security').innerHTML = i18n[l].pwdSec;
     if (currentUser) document.getElementById('display-user').innerText = `${i18n[l].user}: ${currentUser}`;
-
     ['test','spot','cluster','recovery'].forEach(k => {
-        const title = document.getElementById(`txt-menu-${k}`);
-        const sub   = document.getElementById(`txt-menu-${k}-sub`);
-        if (title) title.innerText = i18n[l][k];
-        if (sub)   sub.innerText   = i18n[l][`${k}Sub`];
+        const t = document.getElementById(`txt-menu-${k}`), s = document.getElementById(`txt-menu-${k}-sub`);
+        if(t) t.innerText = i18n[l][k]; if(s) s.innerText = i18n[l][k+'Sub'];
     });
-
-    document.getElementById('txt-loading').innerText  = i18n[l].load;
-    document.getElementById('btn-next').innerText     = i18n[l].next;
+    document.getElementById('txt-loading').innerText = i18n[l].load;
+    document.getElementById('btn-next').innerText = i18n[l].next;
     document.getElementById('txt-res-title').innerText = i18n[l].res;
-    document.getElementById('btn-res-home').innerText  = i18n[l].home;
-}
-
-/* =====================================================================
-   AUTH
-   ===================================================================== */
-function toggleAuthMode(m) {
-    authMode = m;
-    document.getElementById('tab-login').className  = m === 'login'
-        ? "flex-1 py-2 rounded-md font-bold bg-white shadow"
-        : "flex-1 py-2 rounded-md font-bold text-gray-500";
-    document.getElementById('tab-signup').className = m === 'signup'
-        ? "flex-1 py-2 rounded-md font-bold bg-white shadow"
-        : "flex-1 py-2 rounded-md font-bold text-gray-500";
-    document.getElementById('auth-msg').classList.add('hidden');
-}
-
-function togglePasswordVisibility() {
-    const pwd  = document.getElementById('auth-password');
-    const icon = document.getElementById('eye-icon');
-    pwd.type   = pwd.type === 'password' ? 'text' : 'password';
-    icon.className = pwd.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+    document.getElementById('btn-res-home').innerText = i18n[l].home;
+    document.getElementById('btn-hint').innerText = i18n[l].hint;
 }
 
 async function handleAuth() {
-    const iden = document.getElementById('auth-identifier').value.trim();
-    const pass = document.getElementById('auth-password').value.trim();
-    const msg  = document.getElementById('auth-msg');
+    const iden = document.getElementById('auth-identifier').value.trim(), pass = document.getElementById('auth-password').value.trim(), msg = document.getElementById('auth-msg');
     if (!iden || !pass) return;
-
     if (authMode === 'signup') {
         const { error } = await _supabase.from('users').insert([{ userid: iden, password: pass }]);
-        msg.className = `text-center text-xs font-bold p-3 rounded-xl border mt-2 ${
-            error ? 'bg-red-50 text-red-700 border-red-200' : 'bg-green-50 text-green-700 border-green-200'
-        }`;
-        msg.innerText = error ? "User ID già esistente" : i18n[currentLang].authOk;
+        msg.className = `text-center text-xs font-bold p-3 rounded-xl border mt-2 ${error ? 'bg-red-50 text-red-700 border-red-200' : 'bg-green-50 text-green-700 border-green-200'}`;
+        msg.innerText = error ? "ID già esistente" : i18n[currentLang].authOk;
         msg.classList.remove('hidden');
     } else {
         const { data } = await _supabase.from('users').select('*').eq('userid', iden).single();
-        if (data && data.password === pass) {
-            currentUser = data.userid;
-            updateLanguage(currentLang);
-            document.getElementById('display-user').innerText = `${i18n[currentLang].user}: ${currentUser}`;
-            showView('view-menu');
-        } else {
-            msg.className = "text-center text-xs font-bold p-3 rounded-xl border mt-2 bg-red-50 text-red-700 border-red-200";
-            msg.innerText = i18n[currentLang].authErr;
-            msg.classList.remove('hidden');
-        }
+        if (data && data.password === pass) { currentUser = data.userid; updateLanguage(currentLang); showView('view-menu'); }
+        else { msg.className = "text-center text-xs font-bold p-3 rounded-xl border mt-2 bg-red-50 text-red-700 border-red-200"; msg.innerText = i18n[currentLang].authErr; msg.classList.remove('hidden'); }
     }
 }
 
-/* =====================================================================
-   ERROR TRACKING — nuova tabella user_errors
-   Schema: id (bigint, PK auto), user_id (text), q_id (bigint),
-           mastered (boolean, default false), created_at (timestamptz)
-   Constraint unico su (user_id, q_id)
-   ===================================================================== */
-
-/**
- * Salva gli errori nella tabella user_errors.
- * Se la domanda esiste già (stesso user_id + q_id), non la duplica
- * (grazie all'ignoreDuplicates su upsert).
- * Viene chiamata SEMPRE al termine di ogni sessione (test, spot, cluster).
- * NON viene chiamata in recovery, altrimenti si ricreerebbero errori
- * che l'utente sta tentando di azzerare.
- */
 async function saveErrors(errorQIds) {
     if (!errorQIds.length || !currentUser) return;
-    const rows = errorQIds.map(q_id => ({
-        user_id: currentUser,
-        q_id: q_id,
-        mastered: false
-    }));
-    const { error } = await _supabase
-        .from('user_errors')
-        .upsert(rows, { onConflict: 'user_id,q_id', ignoreDuplicates: true });
-    if (error) console.error('Errore nel salvataggio degli errori:', error);
+    const rows = errorQIds.map(q_id => ({ user_id: currentUser, q_id: q_id, mastered: false }));
+    await _supabase.from('user_errors').upsert(rows, { onConflict: 'user_id,q_id' });
 }
 
-/**
- * Segna una domanda come "acquisita" (mastered = true).
- * La domanda scompare dalla recovery ma rimane nella tabella per storico.
- */
 async function manualClear(qId, btnElement) {
     if (!confirm(i18n[currentLang].masteredConfirm)) return;
-    const { error } = await _supabase
-        .from('user_errors')
-        .update({ mastered: true })
-        .eq('user_id', currentUser)
-        .eq('q_id', qId);
-    if (error) {
-        console.error('Errore nel deflag:', error);
-        return;
-    }
-    // Rimuovi la card dal DOM
-    btnElement.closest('.recap-card').remove();
+    const { error } = await _supabase.from('user_errors').update({ mastered: true }).eq('user_id', currentUser).eq('q_id', qId);
+    if (!error) btnElement.closest('.recap-card').style.opacity = "0.3";
 }
 
-/* =====================================================================
-   QUIZ PREPARATION
-   ===================================================================== */
 async function prepareQuiz(mode, filterVal = null) {
-    quizMode = mode;
-    showView('view-loading');
+    quizMode = mode; showView('view-loading');
     let qSet = [];
-
     if (mode === 'recovery') {
-        // Recupera solo gli errori non ancora acquisiti
-        const { data: errorRows, error } = await _supabase
-            .from('user_errors')
-            .select('q_id')
-            .eq('user_id', currentUser)
-            .eq('mastered', false);
-
-        if (error) { console.error(error); }
-
-        const uniqueIds = [...new Set((errorRows || []).map(r => r.q_id))];
-
-        if (uniqueIds.length === 0) {
-            alert(i18n[currentLang].noErrors);
-            showView('view-menu');
-            return;
-        }
-
-        const { data } = await _supabase
-            .from('questions')
-            .select('*')
-            .in('id', uniqueIds);
-
+        const { data: errorRows } = await _supabase.from('user_errors').select('q_id').eq('user_id', currentUser).eq('mastered', false);
+        const ids = [...new Set((errorRows || []).map(r => r.q_id))];
+        if (!ids.length) { alert(i18n[currentLang].noErrors); showView('view-menu'); return; }
+        const { data } = await _supabase.from('questions').select('*').in('id', ids);
         qSet = data || [];
-
     } else {
-        let query = _supabase.from('questions').select('*');
-        if (mode === 'cluster') query = query.eq('category', filterVal);
-        const { data } = await query;
-        qSet = data || [];
+        let q = _supabase.from('questions').select('*');
+        if (mode === 'cluster') q = q.eq('category', filterVal);
+        const { data } = await q; qSet = data || [];
     }
-
-    // Mescola in modo casuale (Fisher-Yates per buona misura)
-    for (let i = qSet.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [qSet[i], qSet[j]] = [qSet[j], qSet[i]];
-    }
-
-    if (mode === 'test') qSet = qSet.slice(0, 10);
-
-    if (!qSet.length) {
-        alert("Nessuna domanda trovata.");
-        showView('view-menu');
-        return;
-    }
-
-    questions     = qSet;
-    currentIndex  = 0;
-    score         = 0;
-    sessionLog    = [];
-
-    showView('view-quiz');
-    startTimer();
-    renderQuestion();
+    questions = qSet.sort(() => Math.random() - 0.5);
+    if (mode === 'test') questions = questions.slice(0, 10);
+    currentIndex = 0; score = 0; sessionLog = [];
+    showView('view-quiz'); startTimer(); renderQuestion();
 }
 
-/* =====================================================================
-   RENDER QUESTION
-   ===================================================================== */
 function renderQuestion() {
     const q = questions[currentIndex];
     document.getElementById('progress').innerText = `Q ${currentIndex + 1}/${questions.length}`;
-    document.getElementById('q-text').innerText   = q[`question_${currentLang}`];
+    document.getElementById('q-text').innerText = q[`question_${currentLang}`];
     document.getElementById('feedback-area').classList.add('hidden');
     document.getElementById('hint-text').classList.add('hidden');
     document.getElementById('hint-area').style.display = (quizMode !== 'test') ? 'block' : 'none';
-
     const container = document.getElementById('opts-container');
     container.innerHTML = '';
-
-    // Prepara e mescola le opzioni
-    let opts = ['A','B','C','D'].map(letter => ({
-        id:   letter,
-        text: q[`option_${letter.toLowerCase()}_${currentLang}`]
-    }));
-    for (let i = opts.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [opts[i], opts[j]] = [opts[j], opts[i]];
-    }
-
+    let opts = ['A','B','C','D'].map(l => ({ id: l, text: q[`option_${l.toLowerCase()}_${currentLang}`] })).sort(() => Math.random() - 0.5);
     opts.forEach(opt => {
-        const b     = document.createElement('button');
+        const b = document.createElement('button');
         b.className = "option-btn w-full p-4 text-left rounded-xl text-sm bg-white border shadow-sm";
         b.innerText = opt.text;
-        b.onclick   = () => handleAnswer(b, opt, q);
+        b.onclick = () => {
+            const isCorrect = opt.id === q.correct_option;
+            sessionLog.push({ q_id: q.id, question: q[`question_${currentLang}`], userAns: opt.text, correctAns: q[`option_${q.correct_option.toLowerCase()}_${currentLang}`], isCorrect });
+            if (quizMode !== 'test') {
+                document.querySelectorAll('.option-btn').forEach(btn => btn.onclick = null);
+                b.classList.add(isCorrect ? 'correct' : 'wrong');
+                document.getElementById('expl-text').innerText = q[`explanation_${currentLang}`];
+                document.getElementById('feedback-area').classList.remove('hidden');
+                if (isCorrect) score++;
+            } else { if (isCorrect) score++; nextQuestion(); }
+        };
         container.appendChild(b);
     });
 }
 
-function handleAnswer(btn, opt, q) {
-    const isCorrect = opt.id === q.correct_option;
-
-    // Registra nel log di sessione
-    sessionLog.push({
-        q_id:       q.id,
-        question:   q[`question_${currentLang}`],
-        userAns:    opt.text,
-        correctAns: q[`option_${q.correct_option.toLowerCase()}_${currentLang}`],
-        isCorrect
-    });
-
-    if (quizMode !== 'test') {
-        // Spot / Cluster / Recovery: feedback immediato
-        document.querySelectorAll('.option-btn').forEach(b => b.onclick = null);
-        btn.classList.add(isCorrect ? 'correct' : 'wrong');
-        document.getElementById('expl-text').innerText = q[`explanation_${currentLang}`];
-        document.getElementById('feedback-area').classList.remove('hidden');
-        if (isCorrect) score++;
-    } else {
-        // Test: nessun feedback, vai subito alla prossima
-        if (isCorrect) score++;
-        nextQuestion();
-    }
-}
-
-/* =====================================================================
-   FINISH & RESULTS
-   ===================================================================== */
 async function finishQuiz() {
     clearInterval(timerInterval);
-
-    // 1. Salva errori — per tutte le modalità TRANNE recovery
-    //    (in recovery non vuoi riscrivere gli errori che stai allenando)
     if (quizMode !== 'recovery') {
-        const errorIds = sessionLog
-            .filter(x => !x.isCorrect)
-            .map(x => x.q_id);
-        await saveErrors(errorIds);
+        const eIds = sessionLog.filter(x => !x.isCorrect).map(x => x.q_id);
+        await saveErrors(eIds);
     }
-
-    // 2. Salva storico punteggio nella tabella user_history (facoltativo, solo per report)
-    if (sessionLog.length > 0) {
-        await _supabase.from('user_history').insert([{
-            user_id: currentUser,
-            score:   `${score}/${sessionLog.length}`,
-            mode:    quizMode
-        }]);
-    }
-
-    // 3. Mostra schermata risultati
+    await _supabase.from('user_history').insert([{ user_id: currentUser, score: `${score}/${sessionLog.length}`, mode: quizMode }]);
     showView('view-results');
     document.getElementById('final-score').innerText = `${score}/${sessionLog.length}`;
-
-    const pace = sessionLog.length > 0 ? seconds / sessionLog.length : 0;
-    document.getElementById('res-time-spent').innerText = `Time: ${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2,'0')}`;
-    document.getElementById('res-time-pace').innerText  = pace <= 45
-        ? i18n[currentLang].paceOk
-        : i18n[currentLang].paceSlow;
-
+    const pace = seconds / sessionLog.length;
+    document.getElementById('res-time-spent').innerText = `Time: ${Math.floor(seconds/60)}:${(seconds%60).toString().padStart(2,'0')}`;
+    document.getElementById('res-time-pace').innerText = pace <= 45 ? i18n[currentLang].paceOk : i18n[currentLang].paceSlow;
     renderRecap();
 }
 
 function renderRecap() {
-    const container = document.getElementById('recap-list');
-    container.innerHTML = '';
-
+    const container = document.getElementById('recap-list'); container.innerHTML = '';
     sessionLog.forEach((item, idx) => {
         const div = document.createElement('div');
-        div.className = `recap-card p-3 rounded-lg border text-[10px] relative ${
-            item.isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'
-        }`;
-
-        // Il bottone "deflag" è visibile solo in recovery E solo per le risposte sbagliate
-        const deflagBtn = (quizMode === 'recovery' && !item.isCorrect)
-            ? `<button
-                    onclick="manualClear(${item.q_id}, this)"
-                    title="Segna come acquisita"
-                    class="absolute top-2 right-2 text-gray-400 hover:text-orange-500 transition"
-               ><i class="fas fa-check-circle"></i></button>`
-            : '';
-
-        div.innerHTML = `
-            ${deflagBtn}
-            <b>${idx + 1}. ${item.question}</b><br>
-            La tua risposta: <span class="${item.isCorrect ? 'text-green-700' : 'text-red-700'} font-bold">${item.userAns}</span>
-            ${!item.isCorrect ? `<br>Risposta corretta: <span class="text-green-700 font-bold">${item.correctAns}</span>` : ''}
-        `;
+        div.className = `recap-card p-3 rounded-lg border text-[10px] relative ${item.isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`;
+        const defBtn = (quizMode === 'recovery') ? `<button onclick="manualClear(${item.q_id}, this)" class="absolute top-2 right-2 text-gray-400 hover:text-orange-500"><i class="fas fa-check-circle"></i></button>` : '';
+        div.innerHTML = `${defBtn}<b>${idx + 1}. ${item.question}</b><br>User: ${item.userAns} | Correct: ${item.correctAns}`;
         container.appendChild(div);
     });
 }
 
-/* =====================================================================
-   UI UTILITIES
-   ===================================================================== */
-function nextQuestion() {
-    currentIndex++;
-    if (currentIndex < questions.length) renderQuestion();
-    else finishQuiz();
-}
+function nextQuestion() { currentIndex++; if (currentIndex < questions.length) renderQuestion(); else finishQuiz(); }
+function startTimer() { seconds = 0; clearInterval(timerInterval); timerInterval = setInterval(() => { seconds++; const m = Math.floor(seconds/60).toString().padStart(2,'0'), s = (seconds%60).toString().padStart(2,'0'); document.getElementById('timer').innerText = `${m}:${s}`; }, 1000); }
+function toggleHint() { const t = document.getElementById('hint-text'); t.innerText = questions[currentIndex][`hint_${currentLang}`] || "..."; t.classList.toggle('hidden'); }
+function showView(id) { ['view-auth','view-menu','view-clusters','view-loading','view-quiz','view-results'].forEach(v => document.getElementById(v).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
+function toggleAuthMode(m) { authMode = m; document.getElementById('tab-login').className = m === 'login' ? "flex-1 py-2 rounded-md font-bold bg-white shadow" : "flex-1 py-2 rounded-md font-bold text-gray-500"; document.getElementById('tab-signup').className = m === 'signup' ? "flex-1 py-2 rounded-md font-bold bg-white shadow" : "flex-1 py-2 rounded-md font-bold text-gray-500"; }
+function togglePasswordVisibility() { const pwd = document.getElementById('auth-password'), icon = document.getElementById('eye-icon'); pwd.type = pwd.type === 'password' ? 'text' : 'password'; icon.className = icon.className.includes('eye-slash') ? 'fas fa-eye' : 'fas fa-eye-slash'; }
+async function showClusters() { showView('view-loading'); const { data } = await _supabase.from('questions').select('category'); const cats = [...new Set(data?.map(q => q.category))].filter(Boolean), container = document.getElementById('cluster-buttons'); container.innerHTML = ''; cats.forEach(c => { const b = document.createElement('button'); b.className = "bg-white p-4 rounded-xl shadow-sm border border-purple-100 font-bold text-purple-700 hover:bg-purple-50"; b.innerText = c; b.onclick = () => prepareQuiz('cluster', c); container.appendChild(b); }); showView('view-clusters'); }
 
-function startTimer() {
-    seconds = 0;
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-        seconds++;
-        const m = Math.floor(seconds / 60).toString().padStart(2,'0');
-        const s = (seconds % 60).toString().padStart(2,'0');
-        document.getElementById('timer').innerText = `${m}:${s}`;
-    }, 1000);
-}
-
-function toggleHint() {
-    const t = document.getElementById('hint-text');
-    t.innerText = questions[currentIndex][`hint_${currentLang}`] || "Nessun suggerimento";
-    t.classList.toggle('hidden');
-}
-
-function showView(id) {
-    ['view-auth','view-menu','view-clusters','view-loading','view-quiz','view-results']
-        .forEach(v => document.getElementById(v).classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-}
-
-async function showClusters() {
-    showView('view-loading');
-    const { data } = await _supabase.from('questions').select('category');
-    const categories = [...new Set(data?.map(q => q.category))].filter(Boolean);
-    const container  = document.getElementById('cluster-buttons');
-    container.innerHTML = '';
-    categories.forEach(cat => {
-        const b     = document.createElement('button');
-        b.className = "bg-white p-4 rounded-xl shadow-sm border border-purple-100 font-bold text-purple-700 hover:bg-purple-50";
-        b.innerText = cat;
-        b.onclick   = () => prepareQuiz('cluster', cat);
-        container.appendChild(b);
-    });
-    showView('view-clusters');
-}
+updateLanguage('it');
 </script>
 </body>
 </html>
